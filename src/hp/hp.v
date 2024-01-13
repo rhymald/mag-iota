@@ -1,8 +1,8 @@
-module health
+module hp
 
 import math
 
-struct Health {
+pub struct Health {
 	plus    int
 	minus   int
 	plus_c  int
@@ -13,9 +13,9 @@ struct Health {
 	dmg_self  f64
 }
 
-fn init_health() Health { return Health{ plus: 618 }}
+pub fn init_health() Health { return Health{ plus: 618 }}
 
-fn (hp Health) do_damage(dmg f64, vitality f64, self bool) Health {
+pub fn (hp Health) consume_damage(dmg f64, vitality f64, self bool) Health {
 	if hp.plus - hp.minus <= 0 { return Health{} }
 	if hp.plus - hp.minus >= 1000 && dmg > 0 { return hp }
 	mut damage := dmg
@@ -34,7 +34,7 @@ fn (hp Health) do_damage(dmg f64, vitality f64, self bool) Health {
 	}
 }
 
-fn (hp Health) show_exp() f64 {
+pub fn (hp Health) show_exp() f64 {
 	mut exp := 1.0
 	if hp.heal_in - hp.dmg_self > 0 { exp += hp.heal_in - hp.dmg_self }
 	if hp.dmg_in - hp.heal_self > 0 { exp += hp.dmg_in - hp.heal_self }
@@ -42,4 +42,4 @@ fn (hp Health) show_exp() f64 {
 	return math.ceil(( math.log( exp ) / math.log(foundation) )*1000)/1000
 }
 
-fn (hp Health) show_rate() f64 { return f64( hp.plus - hp.minus )/1000 }
+pub fn (hp Health) show_rate() f64 { return f64( hp.plus - hp.minus )/1000 }
